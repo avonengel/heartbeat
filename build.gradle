@@ -1,0 +1,9 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '0.0.1'
+jar {
+    manifest {
+        attributes 'Main-Class': 'de.vonengel.g930beat.G930Beat'
+    }
+}
