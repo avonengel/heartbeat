@@ -10,7 +10,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class G930BeatController {
+    private static final Logger LOG = LoggerFactory.getLogger(G930BeatController.class);
 
     @FXML
     private ResourceBundle resources;
@@ -45,13 +49,29 @@ public class G930BeatController {
 
     @FXML
     void addSelectedBeat(ActionEvent event) {
-        if (!leftList.getSelectionModel().getSelectedItems().isEmpty()) {
-
+        ObservableList<String> selectedItems = leftList.getSelectionModel().getSelectedItems();
+        if (!selectedItems.isEmpty()) {
+            selectedItems.forEach(mixerName -> {
+                leftList.getItems().remove(mixerName);
+                rightList.getItems().add(mixerName);
+                try {
+                    heartbeat.start(mixerName);
+                } catch (Exception e) {
+                    LOG.error("Could not start mixer '{}'", mixerName, e);
+                }
+            });
         }
     }
 
     @FXML
     void removeSelectedBeat(ActionEvent event) {
-
+        ObservableList<String> selectedItems = rightList.getSelectionModel().getSelectedItems();
+        if (!selectedItems.isEmpty()) {
+            selectedItems.forEach(mixerName -> {
+                leftList.getItems().add(mixerName);
+                rightList.getItems().remove(mixerName);
+                heartbeat.cancelMixer(mixerName);
+            });
+        }
     }
 }

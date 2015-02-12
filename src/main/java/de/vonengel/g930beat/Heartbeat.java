@@ -3,7 +3,9 @@ package de.vonengel.g930beat;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 public class Heartbeat {
     private static final Logger LOG = LoggerFactory.getLogger(Heartbeat.class);
-    private Timer timer;
+    private Map<String, Timer> runningBeats = new HashMap<>();
     private Clip clip;
 
     public void start(String mixerName) throws Exception {
@@ -39,8 +41,9 @@ public class Heartbeat {
                 Heartbeat.this.clip.start();
             }
         };
-        this.timer = new Timer("Heartbeat930", true);
-        this.timer.scheduleAtFixedRate(task, 0L, computePeriod());
+        Timer timer = new Timer("Heartbeat930-" + mixerName, true);
+        runningBeats.put(mixerName, timer);
+        timer.scheduleAtFixedRate(task, 0L, computePeriod());
     }
 
     public Mixer.Info pickMixer(String desiredName) {
@@ -59,7 +62,7 @@ public class Heartbeat {
     }
 
     public void stop() {
-        this.timer.cancel();
+        runningBeats.forEach((name, timer) -> timer.cancel());
         this.clip.close();
     }
 
@@ -67,6 +70,7 @@ public class Heartbeat {
             UnsupportedAudioFileException {
         URL url = super.getClass().getClassLoader()
                 .getResource(HeartbeatProperties.getFile());
+        assert url != null;
         AudioInputStream ais = AudioSystem.getAudioInputStream(url);
         return ais;
     }
@@ -76,7 +80,7 @@ public class Heartbeat {
     }
 
     public List<String> getAvailableMixers() {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         DataLine.Info lineInfo = new DataLine.Info(SourceDataLine.class, null);
         for (Info mixerInfo : AudioSystem.getMixerInfo()) {
             if (AudioSystem.getMixer(mixerInfo).isLineSupported(lineInfo)) {
@@ -85,5 +89,12 @@ public class Heartbeat {
             }
         }
         return result;
+    }
+
+    public void cancelMixer(String mixerName) {
+        Timer timer = runningBeats.get(mixerName);
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 }
