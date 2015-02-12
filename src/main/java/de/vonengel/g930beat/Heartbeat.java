@@ -2,6 +2,8 @@ package de.vonengel.g930beat;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,7 +11,10 @@ import java.util.TimerTask;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.Mixer;
+import javax.sound.sampled.Mixer.Info;
+import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.slf4j.Logger;
@@ -68,5 +73,17 @@ public class Heartbeat {
 
     private long computePeriod() {
         return (HeartbeatProperties.getPeriod() * 1000L);
+    }
+
+    public List<String> getAvailableMixers() {
+        List<String> result = new ArrayList<String>();
+        DataLine.Info lineInfo = new DataLine.Info(SourceDataLine.class, null);
+        for (Info mixerInfo : AudioSystem.getMixerInfo()) {
+            if (AudioSystem.getMixer(mixerInfo).isLineSupported(lineInfo)) {
+                LOG.debug("Mixer '{}' supports the lineInfo", mixerInfo);
+                result.add(mixerInfo.getName());
+            }
+        }
+        return result;
     }
 }
