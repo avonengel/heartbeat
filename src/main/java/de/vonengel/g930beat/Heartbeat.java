@@ -30,15 +30,19 @@ public class Heartbeat {
     public void start(String mixerName) throws Exception {
         AudioInputStream ais = loadAudioInput();
         Mixer.Info mixerInfo = pickMixer(mixerName);
-        this.clip = AudioSystem.getClip(mixerInfo);
-        this.clip.open(ais);
-        LOG.info("Starting heartbeat ...");
+        final Clip clip = AudioSystem.getClip(mixerInfo);
+        clip.open(ais);
         logParameters(mixerInfo);
         TimerTask task = new TimerTask() {
             public void run() {
                 Heartbeat.LOG.info("Sending heartbeat");
-                Heartbeat.this.clip.setFramePosition(0);
-                Heartbeat.this.clip.start();
+                try {
+                    clip.setFramePosition(0);
+                    clip.start();
+                } catch (Exception e) {
+                    LOG.error("Error playing clip", e);
+                    clip.close();
+                }
             }
         };
         Timer timer = new Timer("Heartbeat930-" + mixerName, true);
@@ -56,6 +60,7 @@ public class Heartbeat {
     }
 
     private void logParameters(Mixer.Info mixerInfo) {
+        LOG.info("Starting heartbeat:");
         LOG.info("Mixer: {}", mixerInfo.getName());
         LOG.info("File: {}", preferences.getFile());
         LOG.info("Period: {}", Long.valueOf(preferences.getPeriod()));
@@ -63,7 +68,6 @@ public class Heartbeat {
 
     public void stop() {
         runningBeats.forEach((name, timer) -> timer.cancel());
-        this.clip.close();
     }
 
     private AudioInputStream loadAudioInput() throws IOException, UnsupportedAudioFileException {
