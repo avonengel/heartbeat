@@ -1,6 +1,8 @@
 # g930beat
 Simple app to occasionally send a sound sample to Logitech G930 wireless headset to keep it online
 
+https://travis-ci.org/Lirion/g930beat
+
 ## credits
 default sound-effect from of http://www.freesfx.co.uk
 
