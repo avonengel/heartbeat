@@ -33,10 +33,12 @@ public class G930BeatController {
     @FXML
     private ListView<String> rightList;
 
+    private G930Beat g930Beat;
     private Heartbeat heartbeat = new Heartbeat();
 
     @FXML
     void initialize() {
+        LOG.debug("location url is: {}", location);
         assert removeBeatButton != null : "fx:id=\"removeBeatButton\" was not injected: check your FXML file 'g930beat.fxml'.";
         assert addBeatButton != null : "fx:id=\"addBeatButton\" was not injected: check your FXML file 'g930beat.fxml'.";
         assert leftList != null : "fx:id=\"leftList\" was not injected: check your FXML file 'g930beat.fxml'.";
@@ -77,5 +79,19 @@ public class G930BeatController {
                 heartbeat.cancelMixer(mixerName);
             });
         }
+    }
+
+    @FXML
+    void exitApplication(ActionEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
+    void openPreferences(ActionEvent event) {
+        g930Beat.openPreferences();
+    }
+
+    public void setG930Beat(G930Beat g930Beat) {
+        this.g930Beat = g930Beat;
     }
 }

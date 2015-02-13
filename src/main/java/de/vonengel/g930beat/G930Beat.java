@@ -6,9 +6,17 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class G930Beat extends Application {
+    private static final Logger LOG = LoggerFactory.getLogger(G930Beat.class);
+
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -16,12 +24,44 @@ public class G930Beat extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("g930beat.fxml"));
+        primaryStage = stage;
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("g930beat.fxml"));
+        Parent root = loader.load();
+        G930BeatController g930Controller = loader.getController();
+        g930Controller.setG930Beat(this);
 
         Scene scene = new Scene(root);
 
         stage.setTitle("G930 Beat");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void openPreferences() {
+        // Load the fxml file and create a new stage for the popup dialog.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("preferences.fxml"));
+        Pane page;
+        try {
+            page = (Pane) loader.load();
+        } catch (IOException e) {
+            LOG.error("Error loading preferences dialog", e);
+            return;
+        }
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Preferences");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        PreferencesController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        // controller.setPerson(person);
+
+        // Show the dialog and wait until the user closes it
+        dialogStage.showAndWait();
     }
 }
