@@ -1,6 +1,8 @@
 package de.vonengel.g930beat;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -9,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +41,8 @@ public class G930BeatController {
         assert addBeatButton != null : "fx:id=\"addBeatButton\" was not injected: check your FXML file 'g930beat.fxml'.";
         assert leftList != null : "fx:id=\"leftList\" was not injected: check your FXML file 'g930beat.fxml'.";
         assert rightList != null : "fx:id=\"rightList\" was not injected: check your FXML file 'g930beat.fxml'.";
-
+        leftList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        rightList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         populateLeftListWithAvailableMixers();
     }
 
@@ -49,7 +53,7 @@ public class G930BeatController {
 
     @FXML
     void addSelectedBeat(ActionEvent event) {
-        ObservableList<String> selectedItems = leftList.getSelectionModel().getSelectedItems();
+        List<String> selectedItems = new ArrayList<String>(leftList.getSelectionModel().getSelectedItems());
         if (!selectedItems.isEmpty()) {
             selectedItems.forEach(mixerName -> {
                 leftList.getItems().remove(mixerName);
@@ -65,7 +69,7 @@ public class G930BeatController {
 
     @FXML
     void removeSelectedBeat(ActionEvent event) {
-        ObservableList<String> selectedItems = rightList.getSelectionModel().getSelectedItems();
+        List<String> selectedItems = new ArrayList<String>(rightList.getSelectionModel().getSelectedItems());
         if (!selectedItems.isEmpty()) {
             selectedItems.forEach(mixerName -> {
                 leftList.getItems().add(mixerName);
