@@ -1,7 +1,7 @@
 # g930beat
 Simple app to occasionally send a sound sample to Logitech G930 wireless headset to keep it online
 
-[![Build Status](https://travis-ci.org/lirion/g930beat.png?branch=master)](https://travis-ci.org/lirion/g930beat)
+[![Build Status](https://travis-ci.org/Lirion/g930beat.png?branch=master)](https://travis-ci.org/lirion/g930beat)
 [![Maintainer Status](http://stillmaintained.com/lirion/g930beat.png)](http://stillmaintained.com/lirion/g930beat)
 
 ## credits
