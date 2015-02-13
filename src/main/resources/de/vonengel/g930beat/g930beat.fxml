@@ -64,8 +64,8 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </padding>
                   </VBox>
-                  <ListView fx:id="leftList" prefHeight="375.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.vgrow="ALWAYS" />
-                  <ListView fx:id="rightList" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnIndex="2" GridPane.vgrow="ALWAYS" />
+                  <ListView fx:id="leftList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.vgrow="ALWAYS" />
+                  <ListView fx:id="rightList" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnIndex="2" GridPane.vgrow="ALWAYS" />
                </children>
             </GridPane>
          </children>

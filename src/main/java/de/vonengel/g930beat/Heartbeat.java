@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 public class Heartbeat {
     private static final Logger LOG = LoggerFactory.getLogger(Heartbeat.class);
     private Map<String, Timer> runningBeats = new HashMap<>();
-    private Clip clip;
+    private HeartbeatPreferences preferences = new HeartbeatPreferences();
 
     public void start(String mixerName) throws Exception {
         AudioInputStream ais = loadAudioInput();
@@ -57,8 +57,8 @@ public class Heartbeat {
 
     private void logParameters(Mixer.Info mixerInfo) {
         LOG.info("Mixer: {}", mixerInfo.getName());
-        LOG.info("File: {}", HeartbeatProperties.getFile());
-        LOG.info("Period: {}", Long.valueOf(HeartbeatProperties.getPeriod()));
+        LOG.info("File: {}", preferences.getFile());
+        LOG.info("Period: {}", Long.valueOf(preferences.getPeriod()));
     }
 
     public void stop() {
@@ -66,17 +66,15 @@ public class Heartbeat {
         this.clip.close();
     }
 
-    private AudioInputStream loadAudioInput() throws IOException,
-            UnsupportedAudioFileException {
-        URL url = super.getClass().getClassLoader()
-                .getResource(HeartbeatProperties.getFile());
+    private AudioInputStream loadAudioInput() throws IOException, UnsupportedAudioFileException {
+        URL url = super.getClass().getClassLoader().getResource(preferences.getFile());
         assert url != null;
         AudioInputStream ais = AudioSystem.getAudioInputStream(url);
         return ais;
     }
 
     private long computePeriod() {
-        return (HeartbeatProperties.getPeriod() * 1000L);
+        return (preferences.getPeriod() * 1000L);
     }
 
     public List<String> getAvailableMixers() {
