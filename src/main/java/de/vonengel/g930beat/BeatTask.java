@@ -29,6 +29,7 @@ final class BeatTask extends TimerTask {
 
     private AudioInputStream initAudioInput(URL url) throws IOException, UnsupportedAudioFileException {
         assert url != null;
+        LOG.debug("loading audio from '{}'", url);
         return AudioSystem.getAudioInputStream(url);
     }
 

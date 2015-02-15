@@ -1,6 +1,11 @@
 package de.vonengel.g930beat;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +22,8 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.io.Resources;
 
 public class Heartbeat {
     private static final Logger LOG = LoggerFactory.getLogger(Heartbeat.class);
@@ -35,8 +42,12 @@ public class Heartbeat {
         timer.scheduleAtFixedRate(task, 0L, computePeriod());
     }
 
-    private URL getFileUrl() {
-        return getClass().getClassLoader().getResource(preferences.getFile());
+    private URL getFileUrl() throws MalformedURLException {
+        Path path = Paths.get(preferences.getFile());
+        if (Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+            return path.toUri().toURL();
+        }
+        return Resources.getResource(preferences.getFile());
     }
 
     public Mixer.Info pickMixer(String desiredName) {
@@ -74,7 +85,7 @@ public class Heartbeat {
             beatTask.cancel();
         }
     }
-    
+
     public void setPreferences(HeartbeatPreferences preferences) {
         this.preferences = preferences;
     }

@@ -1,10 +1,14 @@
 package de.vonengel.g930beat;
 
+import java.io.File;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import org.slf4j.Logger;
@@ -47,6 +51,8 @@ public class PreferencesController {
     void handleOkClicked() {
         if (validateFields()) {
             preferences.setPeriod(getDelayValue());
+            preferences.setFile(fileTextField.getText());
+            dialogStage.close();
         } else {
             // TODO notify user
         }
@@ -79,5 +85,15 @@ public class PreferencesController {
     private void setFieldsFromPreferences() {
         delayTextField.setText(Long.toString(preferences.getPeriod()));
         fileTextField.setText(preferences.getFile());
+    }
+
+    @FXML
+    public void selectFileButton(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("WAV Files", "wav"));
+        File selectedFile = fileChooser.showOpenDialog(dialogStage);
+        if (selectedFile.exists()) {
+            fileTextField.setText(selectedFile.getAbsolutePath());
+        }
     }
 }
