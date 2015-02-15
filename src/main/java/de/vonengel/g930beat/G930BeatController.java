@@ -36,7 +36,7 @@ public class G930BeatController {
     private ListView<String> rightList;
 
     private G930Beat g930Beat;
-    private Heartbeat heartbeat = new Heartbeat();
+    private Heartbeat heartbeat;
     private ExecutorService executor;
 
     @FXML
@@ -48,7 +48,6 @@ public class G930BeatController {
         assert rightList != null : "fx:id=\"rightList\" was not injected: check your FXML file 'g930beat.fxml'.";
         leftList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         rightList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        populateLeftListWithAvailableMixers();
     }
 
     private void populateLeftListWithAvailableMixers() {
@@ -116,5 +115,10 @@ public class G930BeatController {
 
     public void setExecutor(ExecutorService executor) {
         this.executor = executor;
+    }
+
+    public void setHeartbeat(Heartbeat heartbeat) {
+        this.heartbeat = heartbeat;
+        populateLeftListWithAvailableMixers();
     }
 }

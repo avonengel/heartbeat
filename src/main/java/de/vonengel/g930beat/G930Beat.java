@@ -19,6 +19,8 @@ public class G930Beat extends Application {
 
     private Stage primaryStage;
 
+    private HeartbeatPreferences preferences;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -32,6 +34,10 @@ public class G930Beat extends Application {
         G930BeatController g930Controller = loader.getController();
         g930Controller.setG930Beat(this);
         g930Controller.setExecutor(Executors.newWorkStealingPool());
+        Heartbeat heartbeat = new Heartbeat();
+        preferences = new HeartbeatPreferences();
+        heartbeat.setPreferences(preferences);
+        g930Controller.setHeartbeat(heartbeat);
 
         Scene scene = new Scene(root);
 
@@ -61,7 +67,7 @@ public class G930Beat extends Application {
 
         PreferencesController controller = loader.getController();
         controller.setDialogStage(dialogStage);
-        // controller.setPerson(person);
+        controller.setPreferences(preferences);
 
         // Show the dialog and wait until the user closes it
         dialogStage.showAndWait();

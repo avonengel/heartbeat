@@ -7,18 +7,25 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PreferencesController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PreferencesController.class);
+    @FXML
+    private TextField delayTextField;
+    @FXML
+    TextField fileTextField;
 
     @FXML
     private Button cancelButton;
-
-    @FXML
-    private TextField delayTextField;
-
     @FXML
     private Button okButton;
-    
+
     private Stage dialogStage;
+
+    private HeartbeatPreferences preferences;
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -39,19 +46,38 @@ public class PreferencesController {
     @FXML
     void handleOkClicked() {
         if (validateFields()) {
-            // TODO apply fields
+            preferences.setPeriod(getDelayValue());
         } else {
             // TODO notify user
         }
     }
 
+    private long getDelayValue() throws NumberFormatException {
+        return Long.parseLong(delayTextField.getText());
+    }
+
     private boolean validateFields() {
-        // TODO implement
+        try {
+            getDelayValue();
+        } catch (NumberFormatException e) {
+            LOG.error("Could not parse long from value '{}'", delayTextField.getText(), e);
+            return false;
+        }
         return true;
     }
 
     @FXML
     void handleCancelClicked() {
         dialogStage.close();
+    }
+
+    public void setPreferences(HeartbeatPreferences preferences) {
+        this.preferences = preferences;
+        setFieldsFromPreferences();
+    }
+
+    private void setFieldsFromPreferences() {
+        delayTextField.setText(Long.toString(preferences.getPeriod()));
+        fileTextField.setText(preferences.getFile());
     }
 }

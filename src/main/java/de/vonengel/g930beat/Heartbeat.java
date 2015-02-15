@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 public class Heartbeat {
     private static final Logger LOG = LoggerFactory.getLogger(Heartbeat.class);
     private Map<String, TimerTask> activeBeats = new HashMap<>();
-    private HeartbeatPreferences preferences = new HeartbeatPreferences();
+    private HeartbeatPreferences preferences;
     private Timer timer;
 
     public Heartbeat() {
@@ -73,5 +73,9 @@ public class Heartbeat {
         if (beatTask != null) {
             beatTask.cancel();
         }
+    }
+    
+    public void setPreferences(HeartbeatPreferences preferences) {
+        this.preferences = preferences;
     }
 }
