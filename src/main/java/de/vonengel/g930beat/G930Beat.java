@@ -1,6 +1,7 @@
 package de.vonengel.g930beat;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,7 @@ public class G930Beat extends Application {
         Parent root = loader.load();
         G930BeatController g930Controller = loader.getController();
         g930Controller.setG930Beat(this);
+        g930Controller.setExecutor(Executors.newWorkStealingPool());
 
         Scene scene = new Scene(root);
 

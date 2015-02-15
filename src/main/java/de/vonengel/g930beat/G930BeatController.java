@@ -4,9 +4,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,6 +37,7 @@ public class G930BeatController {
 
     private G930Beat g930Beat;
     private Heartbeat heartbeat = new Heartbeat();
+    private ExecutorService executor;
 
     @FXML
     void initialize() {
@@ -59,12 +62,20 @@ public class G930BeatController {
         if (!selectedItems.isEmpty()) {
             selectedItems.forEach(mixerName -> {
                 leftList.getItems().remove(mixerName);
-                rightList.getItems().add(mixerName);
-                try {
-                    heartbeat.start(mixerName);
-                } catch (Exception e) {
-                    LOG.error("Could not start mixer '{}'", mixerName, e);
-                }
+                Task<Void> task = new Task<Void>() {
+
+                    @Override
+                    protected Void call() throws Exception {
+                        try {
+                            heartbeat.start(mixerName);
+                        } catch (Exception e) {
+                            LOG.error("Could not start mixer '{}'", mixerName, e);
+                        }
+                        return null;
+                    }
+                };
+                task.setOnSucceeded(event1 -> rightList.getItems().add(mixerName));
+                executor.submit(task);
             });
         }
     }
@@ -74,9 +85,17 @@ public class G930BeatController {
         List<String> selectedItems = new ArrayList<String>(rightList.getSelectionModel().getSelectedItems());
         if (!selectedItems.isEmpty()) {
             selectedItems.forEach(mixerName -> {
-                leftList.getItems().add(mixerName);
                 rightList.getItems().remove(mixerName);
-                heartbeat.cancelMixer(mixerName);
+                Task<Void> task = new Task<Void>() {
+
+                    @Override
+                    protected Void call() throws Exception {
+                        heartbeat.cancelMixer(mixerName);
+                        return null;
+                    }
+                };
+                task.setOnSucceeded(event1 -> leftList.getItems().add(mixerName));
+                executor.submit(task);
             });
         }
     }
@@ -93,5 +112,9 @@ public class G930BeatController {
 
     public void setG930Beat(G930Beat g930Beat) {
         this.g930Beat = g930Beat;
+    }
+
+    public void setExecutor(ExecutorService executor) {
+        this.executor = executor;
     }
 }
