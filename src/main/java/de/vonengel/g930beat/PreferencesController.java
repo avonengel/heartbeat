@@ -96,4 +96,16 @@ public class PreferencesController {
             fileTextField.setText(selectedFile.getAbsolutePath());
         }
     }
+
+    @FXML
+    public void resetFileToDefault(ActionEvent event) {
+        preferences.setFile(HeartbeatPreferences.DEFAULT_SOUND);
+        fileTextField.setText(preferences.getFile());
+    }
+
+    @FXML
+    public void resetDelayToDefault(ActionEvent event) {
+        preferences.setPeriod(HeartbeatPreferences.DEFAULT_PERIOD);
+        delayTextField.setText(Long.toString(preferences.getPeriod()));
+    }
 }

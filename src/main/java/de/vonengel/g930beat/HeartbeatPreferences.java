@@ -6,11 +6,11 @@ public class HeartbeatPreferences {
     public static final String FILE = "file";
     public static final String PERIOD = "period";
 
-    private static final String DEFAULT_SOUND = "timer_bell_or_desk_bell_ringing.wav";
+    public static final String DEFAULT_SOUND = "timer_bell_or_desk_bell_ringing.wav";
     /**
      * 20 minutes (in seconds): {@value #DEFAULT_PERIOD}
      */
-    private static final int DEFAULT_PERIOD = 20 * 60;
+    public static final int DEFAULT_PERIOD = 20 * 60;
 
     private Preferences preferences = Preferences.userNodeForPackage(HeartbeatPreferences.class);
 

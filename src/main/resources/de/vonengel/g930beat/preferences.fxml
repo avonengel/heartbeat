@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vonengel.g930beat.PreferencesController">
+<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" vgap="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vonengel.g930beat.PreferencesController">
   <children>
   <Label text="Preferences" textAlignment="LEFT" wrapText="true" GridPane.columnSpan="2147483647">
     <font>
@@ -18,7 +18,7 @@
   </Label>
       <Label text="Sound file" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
       <TextField fx:id="fileTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Button mnemonicParsing="false" text="..." GridPane.columnIndex="2" GridPane.rowIndex="2" onAction="#selectFileButton" />
+      <Button mnemonicParsing="false" onAction="#selectFileButton" text="..." GridPane.columnIndex="2" GridPane.rowIndex="2" />
     <HBox alignment="BOTTOM_RIGHT" maxHeight="-Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
       <children>
         <Button fx:id="cancelButton" cancelButton="true" minWidth="80.0" mnemonicParsing="false" onAction="#handleCancelClicked" text="Cancel" HBox.hgrow="NEVER">
@@ -35,11 +35,14 @@
     </HBox>
       <Label layoutX="24.0" layoutY="67.0" text="Delay" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
       <TextField fx:id="delayTextField" layoutX="92.0" layoutY="63.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Button mnemonicParsing="false" onAction="#resetFileToDefault" text="reset" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Button mnemonicParsing="false" onAction="#resetDelayToDefault" text="reset" GridPane.columnIndex="3" GridPane.rowIndex="1" />
   </children>
   <columnConstraints>
     <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
     <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="+Infinity" minWidth="-Infinity" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="Infinity" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="Infinity" />
+      <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="Infinity" />
   </columnConstraints>
   <padding>
     <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
