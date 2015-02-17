@@ -121,4 +121,9 @@ public class G930BeatController {
         this.heartbeat = heartbeat;
         populateLeftListWithAvailableMixers();
     }
+
+    @FXML
+    public void openAboutDialog(ActionEvent event) {
+        g930Beat.openAboutDialog();
+    }
 }

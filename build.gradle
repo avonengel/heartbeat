@@ -4,11 +4,6 @@ apply from: 'javafx.plugin'
 
 sourceCompatibility = 1.8
 version = '0.0.1'
-//jar {
-//    manifest {
-//        attributes 'Main-Class': 'de.vonengel.g930beat.G930Beat'
-//    }
-//}
 repositories {
     mavenCentral()
 }
@@ -27,3 +22,9 @@ eclipse {
 javafx {
     mainClass 'de.vonengel.g930beat.G930Beat'
 }
+
+task copyReadMe(type: Copy) {
+    from 'README.md'
+    into sourceSets.main.output.resourcesDir
+}
+processResources.dependsOn(copyReadMe)

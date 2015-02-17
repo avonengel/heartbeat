@@ -72,4 +72,30 @@ public class G930Beat extends Application {
         // Show the dialog and wait until the user closes it
         dialogStage.showAndWait();
     }
+
+    public void openAboutDialog() {
+        // Load the fxml file and create a new stage for the popup dialog.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("about.fxml"));
+        Pane page;
+        try {
+            page = (Pane) loader.load();
+        } catch (IOException e) {
+            LOG.error("Error loading preferences dialog", e);
+            return;
+        }
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Preferences");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        AboutController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+
+        // Show the dialog and wait until the user closes it
+        dialogStage.showAndWait();
+    }
 }
