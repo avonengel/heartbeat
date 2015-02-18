@@ -22,5 +22,5 @@ eclipse {
 
 javafx {
     mainClass 'de.vonengel.g930beat.G930Beat'
-    javaRuntime '<NO RUNTIME>'
+//    javaRuntime '<NO RUNTIME>'
 }
