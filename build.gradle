@@ -3,7 +3,8 @@ apply plugin: 'eclipse'
 apply from: 'javafx.plugin'
 
 sourceCompatibility = 1.8
-version = '0.0.1'
+group = 'com.github.avonengel.heartbeat'
+version = '1.0.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
@@ -21,4 +22,5 @@ eclipse {
 
 javafx {
     mainClass 'de.vonengel.g930beat.G930Beat'
+    javaRuntime '<NO RUNTIME>'
 }
