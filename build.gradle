@@ -22,9 +22,3 @@ eclipse {
 javafx {
     mainClass 'de.vonengel.g930beat.G930Beat'
 }
-
-task copyReadMe(type: Copy) {
-    from 'README.md'
-    into sourceSets.main.output.resourcesDir
-}
-processResources.dependsOn(copyReadMe)
